@@ -5,325 +5,116 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Minhas Finanças</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #F7F6F2;
+    --bg: #FDF6F9;
     --surface: #FFFFFF;
-    --surface2: #F0EDE6;
-    --text: #1A1A18;
-    --text2: #6B6860;
-    --text3: #A8A59E;
-    --border: #E2DED7;
-    --green: #2D6A4F;
-    --green-light: #D8F3DC;
-    --red: #9B2335;
-    --red-light: #FCE4E8;
-    --blue: #1B4F8A;
-    --blue-light: #DDEAF8;
-    --amber: #8B5E0A;
-    --amber-light: #FFF0CC;
-    --accent: #2D6A4F;
-    --radius: 12px;
-    --radius-sm: 8px;
+    --surface2: #FAF0F5;
+    --text: #3D1A2E;
+    --text2: #8C5F74;
+    --text3: #C4A0B4;
+    --border: #F0D6E4;
+    --green: #5A7F62;
+    --green-light: #E4F0E6;
+    --red: #C0395A;
+    --red-light: #FCE8EE;
+    --blue: #7B6FA0;
+    --blue-light: #EDE9F8;
+    --amber: #B07D4A;
+    --amber-light: #FDF3E7;
+    --pink-dark: #9C2D52;
+    --pink-mid: #D4547A;
+    --pink-light: #F7C0D1;
+    --pink-pale: #FDE8EF;
+    --radius: 16px;
+    --radius-sm: 10px;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
-
-  /* HEADER */
   .header {
-    background: var(--text);
+    background: linear-gradient(120deg, #9C2D52 0%, #D4547A 65%, #F2A0BF 100%);
     padding: 0 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
+    height: 64px;
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 4px 20px rgba(156,45,82,0.25);
   }
-  .header-brand {
-    font-family: 'DM Serif Display', serif;
-    font-size: 20px;
-    color: #fff;
-    letter-spacing: -0.3px;
-  }
-  .header-brand span { color: #A8D5B5; }
-  .header-month {
-    font-size: 13px;
-    color: #888;
-    background: #2A2A28;
-    padding: 4px 12px;
-    border-radius: 20px;
-  }
+  .header-brand { font-family: 'Playfair Display', serif; font-size: 22px; color: #fff; }
+  .header-brand span { font-style: italic; color: #FFE0EC; }
+  .header-month { font-size: 12px; font-weight: 600; color: #FFE0EC; background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: 20px; letter-spacing: 0.05em; text-transform: uppercase; }
 
-  /* LAYOUT */
   .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
 
-  /* TABS */
-  .tabs {
-    display: flex;
-    gap: 2px;
-    background: var(--surface2);
-    border-radius: var(--radius);
-    padding: 4px;
-    margin-bottom: 2rem;
-    width: fit-content;
-  }
-  .tab {
-    padding: 8px 20px;
-    font-size: 13px;
-    font-weight: 500;
-    font-family: 'DM Sans', sans-serif;
-    border: none;
-    background: none;
-    color: var(--text2);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .tab.active {
-    background: var(--surface);
-    color: var(--text);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  }
-  .tab:hover:not(.active) { color: var(--text); }
+  .tabs { display: flex; gap: 2px; background: var(--surface2); border-radius: 30px; padding: 4px; margin-bottom: 2rem; width: fit-content; border: 1px solid var(--border); }
+  .tab { padding: 8px 22px; font-size: 13px; font-weight: 600; font-family: 'Nunito', sans-serif; border: none; background: none; color: var(--text2); border-radius: 30px; cursor: pointer; transition: all 0.2s; }
+  .tab.active { background: var(--pink-mid); color: #fff; box-shadow: 0 2px 10px rgba(212,84,122,0.35); }
+  .tab:hover:not(.active) { color: var(--pink-dark); background: var(--pink-pale); }
 
-  /* SECTIONS */
   .section { display: none; }
   .section.active { display: block; }
 
-  /* CARDS GRID */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  .metric-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.25rem 1.5rem;
-  }
-  .metric-card .mc-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 0.5rem;
-  }
-  .metric-card .mc-value {
-    font-family: 'DM Serif Display', serif;
-    font-size: 26px;
-    line-height: 1.1;
-  }
+  .cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; position: relative; overflow: hidden; }
+  .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pink-dark), var(--pink-light)); }
+  .mc-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 0.5rem; }
+  .mc-value { font-family: 'Playfair Display', serif; font-size: 24px; line-height: 1.1; }
   .mc-value.green { color: var(--green); }
   .mc-value.red { color: var(--red); }
   .mc-value.blue { color: var(--blue); }
-  .metric-card .mc-sub {
-    font-size: 11px;
-    color: var(--text3);
-    margin-top: 4px;
-  }
+  .mc-value.pink { color: var(--pink-dark); }
+  .mc-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
 
-  /* FORM CARD */
-  .form-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .form-card h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 17px;
-    margin-bottom: 1.25rem;
-    color: var(--text);
-  }
-  .form-row {
-    display: grid;
-    grid-template-columns: 140px 1fr 160px 140px 140px auto;
-    gap: 10px;
-    align-items: end;
-  }
-  .field label {
-    display: block;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 6px;
-  }
-  input, select {
-    width: 100%;
-    height: 40px;
-    padding: 0 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: var(--text);
-    background: var(--bg);
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  input:focus, select:focus { border-color: var(--accent); }
+  .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 16px rgba(212,84,122,0.06); }
+  .form-card h3 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 1.25rem; color: var(--pink-dark); }
+  .form-row { display: grid; grid-template-columns: 140px 1fr 170px 140px 150px auto; gap: 10px; align-items: end; }
+  .field label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+  input, select { width: 100%; height: 40px; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Nunito', sans-serif; font-size: 14px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+  input:focus, select:focus { border-color: var(--pink-mid); box-shadow: 0 0 0 3px rgba(212,84,122,0.12); }
 
-  .btn {
-    height: 40px;
-    padding: 0 20px;
-    border-radius: var(--radius-sm);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-  .btn:hover { background: var(--surface2); }
-  .btn-primary {
-    background: var(--text);
-    color: #fff;
-    border-color: var(--text);
-  }
-  .btn-primary:hover { background: #333; }
-  .btn-sm {
-    height: 30px;
-    padding: 0 12px;
-    font-size: 12px;
-  }
-  .btn-danger { color: var(--red); border-color: #FECDD3; }
+  .btn { height: 40px; padding: 0 20px; border-radius: var(--radius-sm); font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: var(--surface); color: var(--text); transition: all 0.15s; white-space: nowrap; }
+  .btn:hover { background: var(--surface2); border-color: var(--pink-light); }
+  .btn-primary { background: linear-gradient(120deg, var(--pink-dark), var(--pink-mid)); color: #fff; border: none; box-shadow: 0 3px 12px rgba(212,84,122,0.35); }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-sm { height: 30px; padding: 0 12px; font-size: 12px; }
+  .btn-danger { color: var(--red); border-color: #F7C0D1; }
   .btn-danger:hover { background: var(--red-light); }
 
-  /* ALERT */
-  .alert {
-    background: var(--amber-light);
-    border: 1px solid #F6C84B;
-    border-left: 4px solid var(--amber);
-    border-radius: var(--radius-sm);
-    padding: 10px 14px;
-    font-size: 13px;
-    color: var(--amber);
-    margin-bottom: 0.75rem;
-  }
+  .alert { background: var(--amber-light); border: 1px solid #F0C898; border-left: 4px solid var(--amber); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; color: var(--amber); margin-bottom: 0.75rem; }
 
-  /* TABLE */
-  .table-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
+  .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 16px rgba(212,84,122,0.06); }
   .table-card table { width: 100%; border-collapse: collapse; }
-  .table-card th {
-    padding: 10px 16px;
-    text-align: left;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--text3);
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-  }
-  .table-card td {
-    padding: 12px 16px;
-    font-size: 13px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text);
-  }
+  .table-card th { padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text3); background: var(--pink-pale); border-bottom: 1px solid var(--border); }
+  .table-card td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: var(--text); }
   .table-card tr:last-child td { border-bottom: none; }
-  .table-card tr:hover td { background: var(--bg); }
+  .table-card tr:hover td { background: var(--pink-pale); }
 
-  .badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-  }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
   .badge.receita { background: var(--green-light); color: var(--green); }
   .badge.gasto { background: var(--red-light); color: var(--red); }
   .badge.fixo { background: var(--blue-light); color: var(--blue); }
 
-  .empty {
-    text-align: center;
-    padding: 3rem;
-    color: var(--text3);
-    font-size: 14px;
-  }
+  .empty { text-align: center; padding: 3rem; color: var(--text3); font-size: 14px; }
 
-  /* CHART */
-  .chart-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .chart-card h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 16px;
-    color: var(--text);
-    margin-bottom: 1.25rem;
-  }
+  .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 16px rgba(212,84,122,0.06); }
+  .chart-card h3 { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--pink-dark); margin-bottom: 1.25rem; }
 
-  /* BARS */
   .bar-item { margin-bottom: 1rem; }
-  .bar-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    margin-bottom: 6px;
-    color: var(--text);
-  }
-  .bar-header .bar-pct { color: var(--text3); font-size: 12px; }
-  .bar-track {
-    background: var(--surface2);
-    border-radius: 4px;
-    height: 6px;
-    overflow: hidden;
-  }
-  .bar-fill { height: 6px; border-radius: 4px; transition: width 0.5s ease; }
+  .bar-header { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; color: var(--text); }
+  .bar-pct { color: var(--text3); font-size: 12px; }
+  .bar-track { background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
+  .bar-fill { height: 8px; border-radius: 4px; transition: width 0.5s ease; }
 
-  /* LIMITES */
-  .limit-item {
-    display: grid;
-    grid-template-columns: 160px 1fr 80px;
-    gap: 10px;
-    align-items: end;
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border);
-  }
+  .limit-item { display: grid; grid-template-columns: 180px 1fr 80px; gap: 10px; align-items: end; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
   .limit-item:last-child { border-bottom: none; }
 
-  /* TOOLBAR */
-  .toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  .toolbar h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 17px;
-  }
-
-  /* TWO COL */
+  .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+  .toolbar h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--pink-dark); }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 
   @media (max-width: 768px) {
@@ -336,46 +127,36 @@
 <body>
 
 <div class="header">
-  <div class="header-brand">minhas<span>finanças</span></div>
+  <div class="header-brand">minhas <span>finanças</span></div>
   <div class="header-month" id="header-mes"></div>
 </div>
 
 <div class="container">
   <div class="tabs">
-    <button class="tab active" onclick="showTab('lancar')">Lançar</button>
+    <button class="tab active" onclick="showTab('lancar')">✦ Lançar</button>
     <button class="tab" onclick="showTab('resumo')">Resumo</button>
     <button class="tab" onclick="showTab('categorias')">Categorias</button>
     <button class="tab" onclick="showTab('limites')">Limites</button>
     <button class="tab" onclick="showTab('historico')">Histórico</button>
   </div>
 
-  <!-- LANÇAR -->
   <div id="lancar" class="section active">
     <div class="form-card">
       <h3>Novo lançamento</h3>
       <div class="form-row">
-        <div class="field">
-          <label>Data</label>
-          <input type="date" id="data">
-        </div>
-        <div class="field">
-          <label>Descrição</label>
-          <input type="text" id="desc" placeholder="Ex: Supermercado">
-        </div>
-        <div class="field">
-          <label>Categoria</label>
+        <div class="field"><label>Data</label><input type="date" id="data"></div>
+        <div class="field"><label>Descrição</label><input type="text" id="desc" placeholder="Ex: Supermercado"></div>
+        <div class="field"><label>Categoria</label>
           <select id="cat">
-            <option>Alimentação</option><option>Transporte</option><option>Moradia</option>
-            <option>Saúde</option><option>Lazer</option><option>Educação</option>
-            <option>Roupas</option><option>Investimento</option><option>Outro</option>
+            <option>Alimentação</option><option>Comer Fora</option><option>Transporte</option>
+            <option>Moradia</option><option>Saúde</option><option>Farmácia</option>
+            <option>Lazer</option><option>Educação</option><option>Roupas</option>
+            <option>Investimento</option><option>Empréstimo</option><option>Financiamento</option>
+            <option>Outro</option>
           </select>
         </div>
-        <div class="field">
-          <label>Valor (R$)</label>
-          <input type="number" id="valor" placeholder="0,00" step="0.01" min="0">
-        </div>
-        <div class="field">
-          <label>Tipo</label>
+        <div class="field"><label>Valor (R$)</label><input type="number" id="valor" placeholder="0,00" step="0.01" min="0"></div>
+        <div class="field"><label>Tipo</label>
           <select id="tipo">
             <option value="gasto">Gasto variável</option>
             <option value="fixo">Gasto fixo</option>
@@ -385,9 +166,7 @@
         <button class="btn btn-primary" onclick="lancar()" style="align-self:end">Adicionar</button>
       </div>
     </div>
-
     <div id="alert-area"></div>
-
     <div class="table-card">
       <table>
         <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th style="text-align:right">Valor</th><th></th></tr></thead>
@@ -396,36 +175,19 @@
     </div>
   </div>
 
-  <!-- RESUMO -->
   <div id="resumo" class="section">
     <div class="cards-grid" id="cards-resumo"></div>
     <div class="two-col">
-      <div class="chart-card">
-        <h3>Saldo mensal (últimos 6 meses)</h3>
-        <canvas id="chart-saldo" height="180"></canvas>
-      </div>
-      <div class="chart-card">
-        <h3>Receitas vs Gastos</h3>
-        <canvas id="chart-rg" height="180"></canvas>
-      </div>
+      <div class="chart-card"><h3>Saldo mensal</h3><canvas id="chart-saldo" height="180"></canvas></div>
+      <div class="chart-card"><h3>Receitas vs Gastos</h3><canvas id="chart-rg" height="180"></canvas></div>
     </div>
   </div>
 
-  <!-- CATEGORIAS -->
   <div id="categorias" class="section">
-    <div class="chart-card">
-      <h3>Gastos por categoria — mês atual</h3>
-      <div id="barras-cat"></div>
-    </div>
-    <div class="chart-card">
-      <h3>Distribuição percentual</h3>
-      <div style="max-width:340px;margin:0 auto">
-        <canvas id="chart-pizza" height="260"></canvas>
-      </div>
-    </div>
+    <div class="chart-card"><h3>Gastos por categoria — mês atual</h3><div id="barras-cat"></div></div>
+    <div class="chart-card"><h3>Distribuição percentual</h3><div style="max-width:340px;margin:0 auto"><canvas id="chart-pizza" height="260"></canvas></div></div>
   </div>
 
-  <!-- LIMITES -->
   <div id="limites" class="section">
     <div class="form-card">
       <h3>Teto mensal por categoria</h3>
@@ -434,7 +196,6 @@
     </div>
   </div>
 
-  <!-- HISTÓRICO -->
   <div id="historico" class="section">
     <div class="toolbar">
       <h3>Todos os lançamentos</h3>
@@ -453,9 +214,12 @@
 </div>
 
 <script>
-const CATS = ['Alimentação','Transporte','Moradia','Saúde','Lazer','Educação','Roupas','Investimento','Outro'];
-const CORES = {'Alimentação':'#2D6A4F','Transporte':'#1B4F8A','Moradia':'#7F77DD','Saúde':'#E24B4A',
-  'Lazer':'#EF9F27','Educação':'#D4537E','Roupas':'#5DCAA5','Investimento':'#3B6D11','Outro':'#888780'};
+const CATS = ['Alimentação','Comer Fora','Transporte','Moradia','Saúde','Farmácia','Lazer','Educação','Roupas','Investimento','Empréstimo','Financiamento','Outro'];
+const CORES = {
+  'Alimentação':'#D4547A','Comer Fora':'#E8839F','Transporte':'#7B6FA0','Moradia':'#9C7BBF',
+  'Saúde':'#5A7F62','Farmácia':'#C0395A','Lazer':'#E0965A','Educação':'#6B8F71',
+  'Roupas':'#BF7BA0','Investimento':'#4A7A6A','Empréstimo':'#8C3D5A','Financiamento':'#6B4FA0','Outro':'#C4A0B4'
+};
 
 let dados = JSON.parse(localStorage.getItem('mf_dados') || '[]');
 let limites = JSON.parse(localStorage.getItem('mf_limites') || '{}');
@@ -465,10 +229,9 @@ const mesAtual = () => new Date().toISOString().slice(0,7);
 const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const salvar = () => { localStorage.setItem('mf_dados', JSON.stringify(dados)); localStorage.setItem('mf_limites', JSON.stringify(limites)); };
 
-// INIT
 document.getElementById('data').value = new Date().toISOString().split('T')[0];
 const now = new Date();
-document.getElementById('header-mes').textContent = now.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+document.getElementById('header-mes').textContent = now.toLocaleDateString('pt-BR',{month:'long',year:'numeric'}).toUpperCase();
 
 function lancar() {
   const tipo = document.getElementById('tipo').value;
@@ -508,13 +271,12 @@ function verificarLimites() {
 function renderRecente() {
   const tb = document.getElementById('tbody-recente');
   const lista = dados.slice(0, 10);
-  if (!lista.length) { tb.innerHTML = `<tr><td colspan="6" class="empty">Nenhum lançamento ainda.</td></tr>`; return; }
+  if (!lista.length) { tb.innerHTML = `<tr><td colspan="6" class="empty">Nenhum lançamento ainda. Comece adicionando sua primeira entrada acima 🌸</td></tr>`; return; }
   tb.innerHTML = lista.map(d => `<tr>
     <td>${d.data.split('-').reverse().join('/')}</td>
-    <td>${d.desc}</td>
-    <td>${d.cat}</td>
+    <td>${d.desc}</td><td>${d.cat}</td>
     <td><span class="badge ${d.tipo}">${{gasto:'Variável',fixo:'Fixo',receita:'Receita'}[d.tipo]}</span></td>
-    <td style="text-align:right;font-weight:500;color:${d.tipo==='receita'?'var(--green)':'var(--red)'}">${d.tipo==='receita'?'+':'-'}${fmt(d.valor)}</td>
+    <td style="text-align:right;font-weight:600;color:${d.tipo==='receita'?'var(--green)':'var(--red)'}">${d.tipo==='receita'?'+':'-'}${fmt(d.valor)}</td>
     <td><button class="btn btn-sm btn-danger" onclick="excluir(${d.id})">✕</button></td>
   </tr>`).join('');
 }
@@ -525,14 +287,12 @@ function renderResumo() {
   const gastos = dados.filter(d => d.data.startsWith(mes) && d.tipo!=='receita').reduce((s,d)=>s+d.valor,0);
   const saldo = receitas - gastos;
   const totalAll = dados.filter(d=>d.tipo==='receita').reduce((s,d)=>s+d.valor,0) - dados.filter(d=>d.tipo!=='receita').reduce((s,d)=>s+d.valor,0);
-
   document.getElementById('cards-resumo').innerHTML = `
     <div class="metric-card"><div class="mc-label">Receitas — mês</div><div class="mc-value green">${fmt(receitas)}</div><div class="mc-sub">entradas</div></div>
     <div class="metric-card"><div class="mc-label">Gastos — mês</div><div class="mc-value red">${fmt(gastos)}</div><div class="mc-sub">saídas</div></div>
-    <div class="metric-card"><div class="mc-label">Saldo — mês</div><div class="mc-value ${saldo>=0?'green':'red'}">${fmt(saldo)}</div><div class="mc-sub">${saldo>=0?'positivo':'negativo'}</div></div>
-    <div class="metric-card"><div class="mc-label">Patrimônio total</div><div class="mc-value ${totalAll>=0?'blue':'red'}">${fmt(totalAll)}</div><div class="mc-sub">acumulado</div></div>`;
+    <div class="metric-card"><div class="mc-label">Saldo — mês</div><div class="mc-value ${saldo>=0?'green':'red'}">${fmt(saldo)}</div><div class="mc-sub">${saldo>=0?'positivo 🌸':'negativo'}</div></div>
+    <div class="metric-card"><div class="mc-label">Patrimônio total</div><div class="mc-value ${totalAll>=0?'pink':'red'}">${fmt(totalAll)}</div><div class="mc-sub">acumulado</div></div>`;
 
-  // saldo por mês
   const meses = {};
   dados.forEach(d => {
     const m = d.data.slice(0,7);
@@ -548,18 +308,18 @@ function renderResumo() {
   if (charts.saldo) charts.saldo.destroy();
   charts.saldo = new Chart(document.getElementById('chart-saldo').getContext('2d'), {
     type: 'bar',
-    data: { labels, datasets: [{ data: saldos, backgroundColor: saldos.map(s=>s>=0?'#D8F3DC':'#FCE4E8'), borderColor: saldos.map(s=>s>=0?'#2D6A4F':'#9B2335'), borderWidth: 1.5, borderRadius: 6 }] },
-    options: { plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>'R$'+v.toLocaleString('pt-BR')},grid:{color:'#F0EDE6'}},x:{grid:{display:false}}}}
+    data: { labels, datasets: [{ data: saldos, backgroundColor: saldos.map(s=>s>=0?'#F7C0D1':'#FCE8EE'), borderColor: saldos.map(s=>s>=0?'#D4547A':'#C0395A'), borderWidth: 1.5, borderRadius: 8 }] },
+    options: { plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>'R$'+v.toLocaleString('pt-BR')},grid:{color:'#FAF0F5'}},x:{grid:{display:false}}}}
   });
 
   if (charts.rg) charts.rg.destroy();
   charts.rg = new Chart(document.getElementById('chart-rg').getContext('2d'), {
     type: 'bar',
     data: { labels, datasets: [
-      { label:'Receitas', data: rec6, backgroundColor:'#D8F3DC', borderColor:'#2D6A4F', borderWidth:1.5, borderRadius:4 },
-      { label:'Gastos', data: gas6, backgroundColor:'#FCE4E8', borderColor:'#9B2335', borderWidth:1.5, borderRadius:4 }
+      { label:'Receitas', data: rec6, backgroundColor:'#E4F0E6', borderColor:'#5A7F62', borderWidth:1.5, borderRadius:6 },
+      { label:'Gastos', data: gas6, backgroundColor:'#F7C0D1', borderColor:'#D4547A', borderWidth:1.5, borderRadius:6 }
     ]},
-    options: { plugins:{legend:{position:'bottom',labels:{font:{size:12}}}}, scales:{y:{ticks:{callback:v=>'R$'+v.toLocaleString('pt-BR')},grid:{color:'#F0EDE6'}},x:{grid:{display:false}}}}
+    options: { plugins:{legend:{position:'bottom',labels:{font:{size:12},padding:12}}}, scales:{y:{ticks:{callback:v=>'R$'+v.toLocaleString('pt-BR')},grid:{color:'#FAF0F5'}},x:{grid:{display:false}}}}
   });
 }
 
@@ -569,20 +329,17 @@ function renderCategorias() {
   CATS.forEach(c => por[c] = 0);
   dados.filter(d => d.data.startsWith(mes) && d.tipo !== 'receita').forEach(d => por[d.cat] = (por[d.cat]||0) + d.valor);
   const total = Object.values(por).reduce((s,v)=>s+v,0) || 1;
-
   const ativas = CATS.filter(c => por[c] > 0);
   document.getElementById('barras-cat').innerHTML = ativas.length === 0
-    ? '<p class="empty">Nenhum gasto registrado este mês.</p>'
+    ? '<p class="empty">Nenhum gasto registrado este mês. 🌸</p>'
     : ativas.sort((a,b)=>por[b]-por[a]).map(c => {
         const pct = Math.round(por[c]/total*100);
         const lim = limites[c];
         const over = lim && por[c] > lim;
         return `<div class="bar-item">
-          <div class="bar-header">
-            <span>${c}${lim?` <small style="color:var(--text3)">/ limite ${fmt(lim)}</small>`:''}</span>
-            <span>${fmt(por[c])} <span class="bar-pct">${pct}%</span></span>
-          </div>
-          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${over?'#E24B4A':CORES[c]}"></div></div>
+          <div class="bar-header"><span>${c}${lim?` <small style="color:var(--text3)">/ limite ${fmt(lim)}</small>`:''}</span>
+          <span>${fmt(por[c])} <span class="bar-pct">${pct}%</span></span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${over?'#C0395A':CORES[c]}"></div></div>
         </div>`;
       }).join('');
 
@@ -590,8 +347,8 @@ function renderCategorias() {
   if (ativas.length) {
     charts.pizza = new Chart(document.getElementById('chart-pizza').getContext('2d'), {
       type: 'doughnut',
-      data: { labels: ativas, datasets:[{ data: ativas.map(c=>por[c]), backgroundColor: ativas.map(c=>CORES[c]), borderWidth:0, hoverOffset:6 }] },
-      options: { plugins:{legend:{position:'bottom',labels:{font:{size:12},padding:12}}}, cutout:'65%' }
+      data: { labels: ativas, datasets:[{ data: ativas.map(c=>por[c]), backgroundColor: ativas.map(c=>CORES[c]), borderWidth:0, hoverOffset:8 }] },
+      options: { plugins:{legend:{position:'bottom',labels:{font:{size:12},padding:14}}}, cutout:'65%' }
     });
   }
 }
@@ -600,9 +357,7 @@ function renderLimites() {
   document.getElementById('form-limites').innerHTML = CATS.map(c => `
     <div class="limit-item">
       <div class="field"><label>${c}</label></div>
-      <div class="field">
-        <input type="number" id="lim_${c}" placeholder="Sem limite definido" value="${limites[c]||''}" min="0" step="50">
-      </div>
+      <div class="field"><input type="number" id="lim_${c}" placeholder="Sem limite definido" value="${limites[c]||''}" min="0" step="50"></div>
       <button class="btn btn-sm" onclick="salvarLimite('${c}')">Salvar</button>
     </div>`).join('');
 }
@@ -615,7 +370,6 @@ function salvarLimite(c) {
 }
 
 function renderHistorico() {
-  // preenche filtro de meses
   const meses = [...new Set(dados.map(d=>d.data.slice(0,7)))].sort().reverse();
   const sel = document.getElementById('filtro-mes');
   const cur = sel.value || mesAtual();
@@ -624,17 +378,15 @@ function renderHistorico() {
     const label = new Date(y,mo-1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
     return `<option value="${m}" ${m===cur?'selected':''}>${label}</option>`;
   }).join('');
-
   const filtro = sel.value;
   const lista = filtro ? dados.filter(d=>d.data.startsWith(filtro)) : dados;
   const tb = document.getElementById('tbody-historico');
   if (!lista.length) { tb.innerHTML = `<tr><td colspan="6" class="empty">Nenhum lançamento encontrado.</td></tr>`; return; }
   tb.innerHTML = lista.map(d => `<tr>
     <td>${d.data.split('-').reverse().join('/')}</td>
-    <td>${d.desc}</td>
-    <td>${d.cat}</td>
+    <td>${d.desc}</td><td>${d.cat}</td>
     <td><span class="badge ${d.tipo}">${{gasto:'Variável',fixo:'Fixo',receita:'Receita'}[d.tipo]}</span></td>
-    <td style="text-align:right;font-weight:500;color:${d.tipo==='receita'?'var(--green)':'var(--red)'}">${d.tipo==='receita'?'+':'-'}${fmt(d.valor)}</td>
+    <td style="text-align:right;font-weight:600;color:${d.tipo==='receita'?'var(--green)':'var(--red)'}">${d.tipo==='receita'?'+':'-'}${fmt(d.valor)}</td>
     <td><button class="btn btn-sm btn-danger" onclick="excluir(${d.id})">✕</button></td>
   </tr>`).join('');
 }
