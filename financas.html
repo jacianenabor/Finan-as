@@ -157,6 +157,7 @@
     <button class="tab active" onclick="showTab('lancar')">✦ Lançar</button>
     <button class="tab" onclick="showTab('resumo')">Resumo</button>
     <button class="tab" onclick="showTab('categorias')">Categorias</button>
+    <button class="tab" onclick="showTab('fixos')">Fixos</button>
     <button class="tab" onclick="showTab('parcelamentos')">Parcelamentos</button>
     <button class="tab" onclick="showTab('limites')">Limites</button>
     <button class="tab" onclick="showTab('historico')">Histórico</button>
@@ -175,7 +176,7 @@
             <option>Moradia</option><option>Saúde</option><option>Farmácia</option>
             <option>Lazer</option><option>Educação</option><option>Roupas</option>
             <option>Investimento</option><option>Empréstimo</option><option>Financiamento</option>
-            <option>Outro</option>
+            <option>Assinaturas</option><option>Outro</option>
           </select>
         </div>
         <div class="field"><label>Valor (R$)</label><input type="number" id="valor" placeholder="0,00" step="0.01" min="0"></div>
@@ -213,6 +214,48 @@
     <div class="chart-card"><h3>Distribuição percentual</h3><div style="max-width:340px;margin:0 auto"><canvas id="chart-pizza" height="260"></canvas></div></div>
   </div>
 
+
+  <!-- FIXOS -->
+  <div id="fixos" class="section">
+    <div class="form-card">
+      <h3>Cadastrar despesa fixa</h3>
+      <div class="form-row-parc">
+        <div class="field"><label>Nome</label><input type="text" id="f-nome" placeholder="Ex: Aluguel, Netflix, Academia..."></div>
+        <div class="field"><label>Valor (R$)</label><input type="number" id="f-val" placeholder="0,00" step="0.01" min="0"></div>
+        <div class="field"><label>Categoria</label>
+          <select id="f-cat">
+            <option>Moradia</option><option>Assinaturas</option><option>Saúde</option>
+            <option>Educação</option><option>Transporte</option><option>Empréstimo</option>
+            <option>Financiamento</option><option>Alimentação</option><option>Outro</option>
+          </select>
+        </div>
+        <div class="field"><label>Dia venc.</label><input type="number" id="f-venc" placeholder="dia" min="1" max="31"></div>
+        <div></div>
+        <button class="btn btn-primary" onclick="addFixo()" style="align-self:end">Cadastrar</button>
+      </div>
+    </div>
+    <div class="cards-grid-3">
+      <div class="metric-card"><div class="mc-label">Total fixo mensal</div><div class="mc-value pink" id="f-total">R$ 0,00</div><div class="mc-sub">comprometido todo mês</div></div>
+      <div class="metric-card"><div class="mc-label">Lançados este mês</div><div class="mc-value green" id="f-lancados">0 de 0</div><div class="mc-sub">já registrados</div></div>
+      <div class="metric-card"><div class="mc-label">Pendentes este mês</div><div class="mc-value pink" id="f-pendentes">0</div><div class="mc-sub">ainda não lançados</div></div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="toolbar" style="margin-bottom:0.75rem"><h3>Minhas despesas fixas</h3></div>
+        <div class="parc-list" id="fixo-list"><p class="empty">Nenhuma despesa fixa cadastrada ainda.</p></div>
+      </div>
+      <div>
+        <div class="toolbar" style="margin-bottom:0.75rem"><h3>Lançados este mês</h3></div>
+        <div class="table-card">
+          <div id="log-fixos-list"><p class="empty" style="padding:2rem">Nenhum lançamento ainda este mês.</p></div>
+          <div id="log-total-row" style="display:none;padding:12px 16px;background:var(--pink-pale);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:13px;font-weight:700;color:var(--text)">Total lançado este mês</span>
+            <span style="font-family:'Playfair Display',serif;font-size:18px;color:var(--pink-dark)" id="log-total-val">R$ 0,00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- PARCELAMENTOS -->
   <div id="parcelamentos" class="section">
     <div class="form-card">
@@ -281,11 +324,11 @@
 </div>
 
 <script>
-const CATS = ['Alimentação','Comer Fora','Transporte','Moradia','Saúde','Farmácia','Lazer','Educação','Roupas','Investimento','Empréstimo','Financiamento','Outro'];
+const CATS = ['Alimentação','Comer Fora','Transporte','Moradia','Saúde','Farmácia','Lazer','Educação','Roupas','Investimento','Empréstimo','Financiamento','Assinaturas','Outro'];
 const CORES = {
   'Alimentação':'#D4547A','Comer Fora':'#E8839F','Transporte':'#7B6FA0','Moradia':'#9C7BBF',
   'Saúde':'#5A7F62','Farmácia':'#C0395A','Lazer':'#E0965A','Educação':'#6B8F71',
-  'Roupas':'#BF7BA0','Investimento':'#4A7A6A','Empréstimo':'#8C3D5A','Financiamento':'#6B4FA0','Outro':'#C4A0B4'
+  'Roupas':'#BF7BA0','Investimento':'#4A7A6A','Empréstimo':'#8C3D5A','Financiamento':'#6B4FA0','Assinaturas':'#1B7A8A','Outro':'#C4A0B4'
 };
 
 let dados = JSON.parse(localStorage.getItem('mf_dados') || '[]');
@@ -422,6 +465,66 @@ function renderCategorias() {
   }
 }
 
+
+let fixos = JSON.parse(localStorage.getItem('mf_fixos') || '[]');
+let lancFixos = JSON.parse(localStorage.getItem('mf_lanc_fixos') || '[]');
+const salvarFixos = () => { localStorage.setItem('mf_fixos', JSON.stringify(fixos)); localStorage.setItem('mf_lanc_fixos', JSON.stringify(lancFixos)); };
+
+function addFixo() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const val = parseFloat(document.getElementById('f-val').value);
+  const cat = document.getElementById('f-cat').value;
+  const venc = parseInt(document.getElementById('f-venc').value) || null;
+  if (!nome || !val) { alert('Preencha nome e valor!'); return; }
+  fixos.push({ id: Date.now(), nome, val, cat, venc });
+  salvarFixos();
+  document.getElementById('f-nome').value='';
+  document.getElementById('f-val').value='';
+  document.getElementById('f-venc').value='';
+  renderFixos();
+}
+
+function lancarFixo(id) {
+  const f = fixos.find(x=>x.id===id);
+  if (!f) return;
+  const mes = mesAtual();
+  if (lancFixos.find(l=>l.fixoId===id && l.mes===mes)) { alert('Essa despesa já foi lançada este mês!'); return; }
+  lancFixos.push({ id: Date.now(), fixoId: id, mes, nome: f.nome, val: f.val, cat: f.cat });
+  salvarFixos();
+  renderFixos();
+}
+
+function editarFixo(id) {
+  const el = document.getElementById('fedit-'+id);
+  const novoVal = parseFloat(el.value);
+  if (!novoVal || novoVal <= 0) { alert('Valor inválido!'); return; }
+  fixos.find(x=>x.id===id).val = novoVal;
+  salvarFixos();
+  renderFixos();
+}
+
+function excluirFixo(id) {
+  if (!confirm('Remover esta despesa fixa?')) return;
+  fixos = fixos.filter(x=>x.id!==id);
+  salvarFixos();
+  renderFixos();
+}
+
+function renderFixos() {
+  const mes = mesAtual();
+  const total = fixos.reduce((s,f)=>s+f.val,0);
+  const lancadosMes = lancFixos.filter(l=>l.mes===mes);
+  const pendentes = fixos.filter(f=>!lancadosMes.find(l=>l.fixoId===f.id)).length;
+  document.getElementById('f-total').textContent = fmt(total);
+  document.getElementById('f-lancados').textContent = lancadosMes.length+' de '+fixos.length;
+  document.getElementById('f-pendentes').textContent = pendentes;
+  const lista = document.getElementById('fixo-list');
+  if (!fixos.length) { lista.innerHTML='<p class="empty">Nenhuma despesa fixa cadastrada ainda.</p>'; }
+  else { lista.innerHTML = fixos.map(f=>{ const jaLancado=!!lancadosMes.find(l=>l.fixoId===f.id); return '<div class="parc-card"><div class="parc-header"><div><div class="parc-nome">'+f.nome+'</div><div class="parc-sub">'+f.cat+(f.venc?' · vence dia '+f.venc:'')+'</div></div><div class="parc-vals"><div style="display:flex;gap:6px;align-items:center"><input type="number" id="fedit-'+f.id+'" value="'+f.val+'" step="0.01" min="0" style="width:110px;height:32px;font-size:13px"><button class="btn btn-sm" onclick="editarFixo('+f.id+')">Salvar</button></div><div class="parc-total">por mês'+(f.venc?' · dia '+f.venc:'')+'</div></div></div><div style="display:flex;justify-content:space-between;align-items:center"><div>'+(jaLancado?'<span class="badge-ok">Lançado ✓</span>':'<span class="badge-aten">Pendente</span>')+'</div><div style="display:flex;gap:6px">'+(!jaLancado?'<button class="btn btn-sm btn-primary" onclick="lancarFixo('+f.id+')">Lançar agora</button>':'')+'<button class="btn btn-sm btn-danger" onclick="excluirFixo('+f.id+')">Remover</button></div></div></div>'; }).join(''); }
+  const logEl = document.getElementById('log-fixos-list');
+  if (!lancadosMes.length) { logEl.innerHTML='<p class="empty" style="padding:2rem">Nenhum lançamento ainda este mês.</p>'; document.getElementById('log-total-row').style.display='none'; }
+  else { logEl.innerHTML=lancadosMes.map(l=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);font-size:13px"><span style="font-weight:600;color:var(--text)">'+l.nome+'</span><span style="color:var(--text3)">'+l.cat+'</span><span style="color:var(--pink-dark);font-weight:600">'+fmt(l.val)+'</span></div>').join(''); const totalLog=lancadosMes.reduce((s,l)=>s+l.val,0); const row=document.getElementById('log-total-row'); row.style.display='flex'; document.getElementById('log-total-val').textContent=fmt(totalLog); }
+}
 function addParc() {
   const nome = document.getElementById('p-nome').value.trim();
   const val = parseFloat(document.getElementById('p-val').value);
@@ -577,12 +680,13 @@ function exportarCSV() {
 }
 
 function showTab(id) {
-  const tabIds = ['lancar','resumo','categorias','parcelamentos','limites','historico'];
+  const tabIds = ['lancar','resumo','categorias','fixos','parcelamentos','limites','historico'];
   document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', tabIds[i]===id));
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if (id==='resumo') renderResumo();
   if (id==='categorias') renderCategorias();
+  if (id==='fixos') renderFixos();
   if (id==='parcelamentos') renderParcs();
   if (id==='limites') renderLimites();
   if (id==='historico') renderHistorico();
@@ -590,6 +694,7 @@ function showTab(id) {
 
 verificarLimites();
 renderRecente();
+renderFixos();
 </script>
 </body>
 </html>
