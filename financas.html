@@ -33,26 +33,15 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  .header {
-    background: linear-gradient(120deg, #9C2D52 0%, #D4547A 65%, #F2A0BF 100%);
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 4px 20px rgba(156,45,82,0.25);
-  }
+  .header { background: linear-gradient(120deg, #9C2D52 0%, #D4547A 65%, #F2A0BF 100%); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(156,45,82,0.25); }
   .header-brand { font-family: 'Playfair Display', serif; font-size: 22px; color: #fff; }
   .header-brand span { font-style: italic; color: #FFE0EC; }
   .header-month { font-size: 12px; font-weight: 600; color: #FFE0EC; background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: 20px; letter-spacing: 0.05em; text-transform: uppercase; }
 
   .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
 
-  .tabs { display: flex; gap: 2px; background: var(--surface2); border-radius: 30px; padding: 4px; margin-bottom: 2rem; width: fit-content; border: 1px solid var(--border); }
-  .tab { padding: 8px 22px; font-size: 13px; font-weight: 600; font-family: 'Nunito', sans-serif; border: none; background: none; color: var(--text2); border-radius: 30px; cursor: pointer; transition: all 0.2s; }
+  .tabs { display: flex; gap: 2px; background: var(--surface2); border-radius: 30px; padding: 4px; margin-bottom: 2rem; width: fit-content; border: 1px solid var(--border); flex-wrap: wrap; }
+  .tab { padding: 8px 18px; font-size: 13px; font-weight: 600; font-family: 'Nunito', sans-serif; border: none; background: none; color: var(--text2); border-radius: 30px; cursor: pointer; transition: all 0.2s; }
   .tab.active { background: var(--pink-mid); color: #fff; box-shadow: 0 2px 10px rgba(212,84,122,0.35); }
   .tab:hover:not(.active) { color: var(--pink-dark); background: var(--pink-pale); }
 
@@ -60,6 +49,7 @@
   .section.active { display: block; }
 
   .cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+  .cards-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
   .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; position: relative; overflow: hidden; }
   .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pink-dark), var(--pink-light)); }
   .mc-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 0.5rem; }
@@ -73,6 +63,7 @@
   .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 16px rgba(212,84,122,0.06); }
   .form-card h3 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 1.25rem; color: var(--pink-dark); }
   .form-row { display: grid; grid-template-columns: 140px 1fr 170px 140px 150px auto; gap: 10px; align-items: end; }
+  .form-row-parc { display: grid; grid-template-columns: 1fr 130px 100px 100px 80px auto; gap: 10px; align-items: end; }
   .field label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
   input, select { width: 100%; height: 40px; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Nunito', sans-serif; font-size: 14px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
   input:focus, select:focus { border-color: var(--pink-mid); box-shadow: 0 0 0 3px rgba(212,84,122,0.12); }
@@ -117,9 +108,39 @@
   .toolbar h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--pink-dark); }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 
+  .parc-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.5rem; }
+  .parc-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; box-shadow: 0 2px 16px rgba(212,84,122,0.06); }
+  .parc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .parc-nome { font-size: 15px; font-weight: 600; color: var(--text); }
+  .parc-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .parc-vals { text-align: right; }
+  .parc-parcela { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--pink-dark); }
+  .parc-total { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .prog-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .prog-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
+  .prog-fill { height: 8px; border-radius: 4px; background: var(--pink-mid); transition: width 0.5s; }
+  .prog-label { font-size: 12px; color: var(--text3); white-space: nowrap; min-width: 32px; text-align: right; }
+  .parc-footer { display: flex; justify-content: space-between; align-items: center; }
+  .badge-ok { background: var(--green-light); color: var(--green); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+  .badge-aten { background: var(--amber-light); color: var(--amber); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+  .badge-fim { background: var(--surface2); color: var(--text3); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+  .parc-venc { font-size: 12px; color: var(--text3); margin-left: 8px; }
+
+  .mes-resumo-lista { display: flex; flex-direction: column; }
+  .mes-resumo-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .mes-resumo-item:last-child { border-bottom: none; }
+  .mes-resumo-item:hover { background: var(--pink-pale); }
+  .mes-nome { color: var(--text); font-weight: 500; }
+  .mes-info { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .mes-val { font-weight: 700; color: var(--pink-dark); font-size: 14px; }
+  .mes-restante { font-size: 11px; color: var(--text3); text-align: right; margin-top: 2px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
   @media (max-width: 768px) {
     .cards-grid { grid-template-columns: 1fr 1fr; }
+    .cards-grid-3 { grid-template-columns: 1fr 1fr; }
     .form-row { grid-template-columns: 1fr 1fr; }
+    .form-row-parc { grid-template-columns: 1fr 1fr; }
     .two-col { grid-template-columns: 1fr; }
   }
 </style>
@@ -136,10 +157,12 @@
     <button class="tab active" onclick="showTab('lancar')">✦ Lançar</button>
     <button class="tab" onclick="showTab('resumo')">Resumo</button>
     <button class="tab" onclick="showTab('categorias')">Categorias</button>
+    <button class="tab" onclick="showTab('parcelamentos')">Parcelamentos</button>
     <button class="tab" onclick="showTab('limites')">Limites</button>
     <button class="tab" onclick="showTab('historico')">Histórico</button>
   </div>
 
+  <!-- LANÇAR -->
   <div id="lancar" class="section active">
     <div class="form-card">
       <h3>Novo lançamento</h3>
@@ -175,6 +198,7 @@
     </div>
   </div>
 
+  <!-- RESUMO -->
   <div id="resumo" class="section">
     <div class="cards-grid" id="cards-resumo"></div>
     <div class="two-col">
@@ -183,11 +207,53 @@
     </div>
   </div>
 
+  <!-- CATEGORIAS -->
   <div id="categorias" class="section">
     <div class="chart-card"><h3>Gastos por categoria — mês atual</h3><div id="barras-cat"></div></div>
     <div class="chart-card"><h3>Distribuição percentual</h3><div style="max-width:340px;margin:0 auto"><canvas id="chart-pizza" height="260"></canvas></div></div>
   </div>
 
+  <!-- PARCELAMENTOS -->
+  <div id="parcelamentos" class="section">
+    <div class="form-card">
+      <h3>Cadastrar parcelamento</h3>
+      <div class="form-row-parc">
+        <div class="field"><label>Nome da compra</label><input type="text" id="p-nome" placeholder="Ex: Notebook Samsung"></div>
+        <div class="field"><label>Valor da parcela</label><input type="number" id="p-val" placeholder="R$ 0,00" step="0.01" min="0"></div>
+        <div class="field"><label>Total de parcelas</label><input type="number" id="p-total" placeholder="12" min="1" step="1"></div>
+        <div class="field"><label>Já paguei</label><input type="number" id="p-pagas" placeholder="0" min="0" step="1"></div>
+        <div class="field"><label>Dia venc.</label><input type="number" id="p-venc" placeholder="dia" min="1" max="31"></div>
+        <button class="btn btn-primary" onclick="addParc()" style="align-self:end">Adicionar</button>
+      </div>
+    </div>
+
+    <div class="cards-grid-3" id="cards-parc">
+      <div class="metric-card"><div class="mc-label">Total em parcelas/mês</div><div class="mc-value pink" id="p-total-mes">R$ 0,00</div><div class="mc-sub">comprometido mensalmente</div></div>
+      <div class="metric-card"><div class="mc-label">Parcelamentos ativos</div><div class="mc-value" id="p-ativos">0</div><div class="mc-sub">em andamento</div></div>
+      <div class="metric-card"><div class="mc-label">Meses para quitar tudo</div><div class="mc-value green" id="p-meses">—</div><div class="mc-sub">até o último parcelamento</div></div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="toolbar" style="margin-bottom:0.75rem"><h3>Meus parcelamentos</h3></div>
+        <div class="parc-list" id="parc-list"><p class="empty">Nenhum parcelamento cadastrado ainda.</p></div>
+      </div>
+      <div>
+        <div class="toolbar" style="margin-bottom:0.75rem"><h3>Resumo mensal</h3></div>
+        <div class="table-card">
+          <div class="mes-resumo-lista" id="mes-resumo-lista">
+            <p class="empty" style="padding:2rem">Cadastre parcelamentos para ver o resumo.</p>
+          </div>
+          <div id="mes-total-row" style="display:none;padding:12px 16px;background:var(--pink-pale);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:13px;font-weight:700;color:var(--text)">Total mensal em parcelas</span>
+            <span style="font-family:'Playfair Display',serif;font-size:18px;color:var(--pink-dark)" id="mes-total-val">R$ 0,00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIMITES -->
   <div id="limites" class="section">
     <div class="form-card">
       <h3>Teto mensal por categoria</h3>
@@ -196,6 +262,7 @@
     </div>
   </div>
 
+  <!-- HISTÓRICO -->
   <div id="historico" class="section">
     <div class="toolbar">
       <h3>Todos os lançamentos</h3>
@@ -223,11 +290,13 @@ const CORES = {
 
 let dados = JSON.parse(localStorage.getItem('mf_dados') || '[]');
 let limites = JSON.parse(localStorage.getItem('mf_limites') || '{}');
+let parcs = JSON.parse(localStorage.getItem('mf_parcs') || '[]');
 let charts = {};
 
 const mesAtual = () => new Date().toISOString().slice(0,7);
 const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const salvar = () => { localStorage.setItem('mf_dados', JSON.stringify(dados)); localStorage.setItem('mf_limites', JSON.stringify(limites)); };
+const salvarParcs = () => localStorage.setItem('mf_parcs', JSON.stringify(parcs));
 
 document.getElementById('data').value = new Date().toISOString().split('T')[0];
 const now = new Date();
@@ -353,6 +422,112 @@ function renderCategorias() {
   }
 }
 
+function addParc() {
+  const nome = document.getElementById('p-nome').value.trim();
+  const val = parseFloat(document.getElementById('p-val').value);
+  const total = parseInt(document.getElementById('p-total').value);
+  const pagas = parseInt(document.getElementById('p-pagas').value) || 0;
+  const venc = parseInt(document.getElementById('p-venc').value) || null;
+  if (!nome || !val || !total) { alert('Preencha nome, valor da parcela e total de parcelas!'); return; }
+  if (pagas > total) { alert('Parcelas pagas não pode ser maior que o total!'); return; }
+  parcs.push({ id: Date.now(), nome, val, total, pagas, venc });
+  salvarParcs();
+  document.getElementById('p-nome').value='';
+  document.getElementById('p-val').value='';
+  document.getElementById('p-total').value='';
+  document.getElementById('p-pagas').value='';
+  document.getElementById('p-venc').value='';
+  renderParcs();
+}
+
+function pagarParc(id) {
+  const p = parcs.find(x=>x.id===id);
+  if (p && p.pagas < p.total) { p.pagas++; salvarParcs(); renderParcs(); }
+}
+
+function excluirParc(id) {
+  if (!confirm('Remover este parcelamento?')) return;
+  parcs = parcs.filter(x=>x.id!==id);
+  salvarParcs();
+  renderParcs();
+}
+
+function renderParcs() {
+  const ativos = parcs.filter(p=>p.pagas < p.total);
+  const totalMes = ativos.reduce((s,p)=>s+p.val,0);
+  const maxFaltam = ativos.length ? Math.max(...ativos.map(p=>p.total-p.pagas)) : 0;
+
+  document.getElementById('p-total-mes').textContent = fmt(totalMes);
+  document.getElementById('p-ativos').textContent = ativos.length;
+  document.getElementById('p-meses').textContent = maxFaltam > 0 ? maxFaltam + ' meses' : '—';
+
+  const lista = document.getElementById('parc-list');
+  if (!parcs.length) {
+    lista.innerHTML = '<p class="empty">Nenhum parcelamento cadastrado ainda.</p>';
+    document.getElementById('mes-resumo-lista').innerHTML = '<p class="empty" style="padding:2rem">Cadastre parcelamentos para ver o resumo.</p>';
+    document.getElementById('mes-total-row').style.display = 'none';
+    return;
+  }
+
+  lista.innerHTML = parcs.map(p => {
+    const faltam = p.total - p.pagas;
+    const pct = Math.round(p.pagas/p.total*100);
+    const totalCompra = +(p.total * p.val).toFixed(2);
+    const badge = faltam === 0
+      ? `<span class="badge-fim">Quitado</span>`
+      : pct >= 70 ? `<span class="badge-ok">Quase lá! ${faltam}x restantes</span>`
+      : `<span class="badge-aten">${faltam}x restantes</span>`;
+    return `<div class="parc-card">
+      <div class="parc-header">
+        <div>
+          <div class="parc-nome">${p.nome}</div>
+          <div class="parc-sub">${p.pagas} de ${p.total} parcelas pagas${p.venc ? ` · vence dia ${p.venc}` : ''}</div>
+        </div>
+        <div class="parc-vals">
+          <div class="parc-parcela">${fmt(p.val)}<span style="font-size:12px;font-family:'Nunito',sans-serif;color:var(--text3)">/mês</span></div>
+          <div class="parc-total">Total: ${fmt(totalCompra)}</div>
+        </div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+        <span class="prog-label">${pct}%</span>
+      </div>
+      <div class="parc-footer">
+        <div>${badge}</div>
+        <div style="display:flex;gap:6px">
+          ${faltam > 0 ? `<button class="btn btn-sm btn-primary" onclick="pagarParc(${p.id})">+ Pagar parcela</button>` : ''}
+          <button class="btn btn-sm btn-danger" onclick="excluirParc(${p.id})">Remover</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const resumoEl = document.getElementById('mes-resumo-lista');
+  const ativosOrdenados = ativos.sort((a,b)=>b.val-a.val);
+  if (!ativosOrdenados.length) {
+    resumoEl.innerHTML = '<p class="empty" style="padding:2rem">Nenhum parcelamento ativo.</p>';
+    document.getElementById('mes-total-row').style.display = 'none';
+  } else {
+    resumoEl.innerHTML = ativosOrdenados.map(p => {
+      const faltam = p.total - p.pagas;
+      const restante = +(faltam * p.val).toFixed(2);
+      return `<div class="mes-resumo-item">
+        <div>
+          <div class="mes-nome">${p.nome}</div>
+          <div class="mes-info">${faltam}x restantes${p.venc ? ` · vence dia ${p.venc}` : ''}</div>
+        </div>
+        <div>
+          <div class="mes-val">${fmt(p.val)}/mês</div>
+          <div class="mes-restante">falta ${fmt(restante)}</div>
+        </div>
+      </div>`;
+    }).join('');
+    const row = document.getElementById('mes-total-row');
+    row.style.display = 'flex';
+    document.getElementById('mes-total-val').textContent = fmt(totalMes);
+  }
+}
+
 function renderLimites() {
   document.getElementById('form-limites').innerHTML = CATS.map(c => `
     <div class="limit-item">
@@ -402,11 +577,13 @@ function exportarCSV() {
 }
 
 function showTab(id) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['lancar','resumo','categorias','limites','historico'][i]===id));
+  const tabIds = ['lancar','resumo','categorias','parcelamentos','limites','historico'];
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', tabIds[i]===id));
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if (id==='resumo') renderResumo();
   if (id==='categorias') renderCategorias();
+  if (id==='parcelamentos') renderParcs();
   if (id==='limites') renderLimites();
   if (id==='historico') renderHistorico();
 }
