@@ -435,23 +435,57 @@ function renderResumo() {
   });
 }
 
+function toggleCat(id) {
+  const el = document.getElementById('cat-detail-'+id);
+  const arrow = document.getElementById('cat-arrow-'+id);
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    arrow.textContent = '▲';
+  } else {
+    el.style.display = 'none';
+    arrow.textContent = '▼';
+  }
+}
+
 function renderCategorias() {
   const mes = mesAtual();
   const por = {};
-  CATS.forEach(c => por[c] = 0);
-  dados.filter(d => d.data.startsWith(mes) && d.tipo !== 'receita').forEach(d => por[d.cat] = (por[d.cat]||0) + d.valor);
+  const transacoesPorCat = {};
+  CATS.forEach(c => { por[c] = 0; transacoesPorCat[c] = []; });
+  dados.filter(d => d.data.startsWith(mes) && d.tipo !== 'receita').forEach(d => {
+    por[d.cat] = (por[d.cat]||0) + d.valor;
+    if (!transacoesPorCat[d.cat]) transacoesPorCat[d.cat] = [];
+    transacoesPorCat[d.cat].push(d);
+  });
   const total = Object.values(por).reduce((s,v)=>s+v,0) || 1;
   const ativas = CATS.filter(c => por[c] > 0);
+  const catId = c => c.replace(/[^a-zA-Z0-9]/g,'');
   document.getElementById('barras-cat').innerHTML = ativas.length === 0
     ? '<p class="empty">Nenhum gasto registrado este mês. 🌸</p>'
     : ativas.sort((a,b)=>por[b]-por[a]).map(c => {
         const pct = Math.round(por[c]/total*100);
         const lim = limites[c];
         const over = lim && por[c] > lim;
-        return `<div class="bar-item">
-          <div class="bar-header"><span>${c}${lim?` <small style="color:var(--text3)">/ limite ${fmt(lim)}</small>`:''}</span>
-          <span>${fmt(por[c])} <span class="bar-pct">${pct}%</span></span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${over?'#C0395A':CORES[c]}"></div></div>
+        const id = catId(c);
+        const trans = transacoesPorCat[c] || [];
+        const linhas = trans.sort((a,b)=>b.data.localeCompare(a.data)).map(d =>
+          `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="color:var(--text2)">${d.data.split('-').reverse().join('/')}</span>
+            <span style="color:var(--text);flex:1;margin:0 12px">${d.desc}</span>
+            <span style="color:${over?'var(--red)':'var(--pink-dark)'};font-weight:600">-${fmt(d.valor)}</span>
+          </div>`
+        ).join('');
+        return `<div class="bar-item" style="border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:10px">
+          <div onclick="toggleCat('${id}')" style="cursor:pointer;padding:12px 14px;background:var(--surface);display:flex;flex-direction:column;gap:8px">
+            <div class="bar-header" style="margin:0">
+              <span style="font-weight:600">${c}${lim?` <small style="color:var(--text3);font-weight:400">/ limite ${fmt(lim)}</small>`:''}</span>
+              <span>${fmt(por[c])} <span class="bar-pct">${pct}%</span> <span id="cat-arrow-${id}" style="color:var(--text3);font-size:10px;margin-left:4px">▼</span></span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${over?'#C0395A':CORES[c]}"></div></div>
+          </div>
+          <div id="cat-detail-${id}" style="display:none;background:var(--pink-pale)">
+            ${linhas || '<p style="padding:12px;font-size:12px;color:var(--text3);text-align:center">Nenhuma transação encontrada.</p>'}
+          </div>
         </div>`;
       }).join('');
 
@@ -489,9 +523,16 @@ function lancarFixo(id) {
   if (!f) return;
   const mes = mesAtual();
   if (lancFixos.find(l=>l.fixoId===id && l.mes===mes)) { alert('Essa despesa já foi lançada este mês!'); return; }
-  lancFixos.push({ id: Date.now(), fixoId: id, mes, nome: f.nome, val: f.val, cat: f.cat });
+  const lancId = Date.now();
+  lancFixos.push({ id: lancId, fixoId: id, mes, nome: f.nome, val: f.val, cat: f.cat });
+  // Insere também em dados para aparecer no Resumo e Histórico
+  const hoje = new Date().toISOString().split('T')[0];
+  dados.push({ id: lancId+1, tipo: 'fixo', desc: f.nome, cat: f.cat, valor: f.val, data: hoje, deLancFixo: true });
+  dados.sort((a,b) => b.data.localeCompare(a.data));
   salvarFixos();
+  salvar();
   renderFixos();
+  renderRecente();
 }
 
 function editarFixo(id) {
